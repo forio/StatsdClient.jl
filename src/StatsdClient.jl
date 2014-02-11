@@ -21,9 +21,9 @@ Statsd(ip::String,port=8125) = Statsd(parseip(ip),port)
 
 import Base.show
 show(io::IO,client::Statsd) = print(io,string("Statsd Server: ",
-                                          client.server_address,
-                                          " Port: ",
-                                          client.server_port))
+                                              client.server_address,
+                                              " Port: ",
+                                              client.server_port))
 
 function _make_send(ip,port)
     sock = UdpSocket()
