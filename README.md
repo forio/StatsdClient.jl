@@ -13,7 +13,7 @@ julia> using StatsdClient
 
 The library defaults to Statsd server at 127.0.0.1:8125.
 
-Ofcourse, you can specify a server ip address and port as well.
+You can specify a server ip address and port as well.
 
 ```julia
 server = StatsdClient.Statsd()
