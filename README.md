@@ -1,5 +1,6 @@
 # StatsdClient.jl
 
+A simple Julia implementation of a statsd client.
 
 ## Quickstart
 
