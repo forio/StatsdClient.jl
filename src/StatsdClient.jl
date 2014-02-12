@@ -9,6 +9,8 @@ module StatsdClient
 # > sdc = StatsdClient.Statsd("0.0.0.0",8125)
 # Statsd Server: 0.0.0.0 Port: 8125
 # > StatsdClient.increment(sdc,"test.me")
+# Please refer to the readme for more examples.
+# Note: Requires Julia 0.3 with commit sha 6585e3de1b or later.
 
 type Statsd
     server_address::IPv4
