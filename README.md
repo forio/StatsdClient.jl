@@ -2,6 +2,8 @@
 
 A simple Julia implementation of a statsd client.
 
+*Please note that this package require Julia 0.3 with commit sha __6585e3de1b__ or later.*
+
 ## Quickstart
 
 ```julia
