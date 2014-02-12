@@ -1,3 +1,7 @@
+**[Quickstart](#quickstart)** |
+**[Configure the Statsd server](#configure-the-statsd-server)** |
+**[Using StatsdClient](#using-statsdclient)**
+
 # StatsdClient.jl
 
 A simple Julia implementation of a statsd client.
