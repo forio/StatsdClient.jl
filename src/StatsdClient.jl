@@ -27,7 +27,7 @@ show(io::IO,client::Statsd) = print(io,string("Statsd Server: ",
 
 function _make_send(ip,port)
     sock = UdpSocket()
-    Base.bind(sock,ip,port)
+    Base.bind(sock,ip,0)
     Base.setopt(sock,enable_broadcast=1)
     (data)->send(sock,ip,port,data)
 end
