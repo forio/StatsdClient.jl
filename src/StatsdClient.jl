@@ -12,6 +12,8 @@ module StatsdClient
 # Please refer to the readme for more examples.
 # Note: Requires Julia 0.3 with commit sha 6585e3de1b or later.
 
+export increment, decrement, count, gauge, timing
+
 type Statsd
     server_address::IPv4
     server_port::Int
