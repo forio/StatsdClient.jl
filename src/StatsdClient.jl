@@ -48,4 +48,15 @@ gauge(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|g"))
 
 set(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|s"))
 
+# versions of the above that accept multiple metrics at once
+for f in [:count, :timing, :gauge, :set]
+    @eval begin
+        function $(f)(cl::Statsd, metrics::Union(AbstractArray, Tuple), value)
+            for m in metrics
+                $(f)(cl, m, value)
+            end
+        end
+    end
+end
+
 end
