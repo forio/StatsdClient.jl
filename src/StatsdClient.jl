@@ -33,27 +33,39 @@ function _make_send(ip,port)
     sock = UdpSocket()
     Base.bind(sock,ip,0)
     Base.setopt(sock,enable_broadcast=1)
-    (data)->send(sock,ip,port,data)
+    function _send(data,sample_rate::Union(Number,Nothing)=nothing)
+        if is(sample_rate,nothing)
+            send(sock,ip,port,data)
+        elseif (0 <= sample_rate <= 1) &&
+               rand() < sample_rate
+            send(sock,ip,port,string(data,"|@",sample_rate))
+        end
+    end
 end
 
-increment(cl::Statsd,metric) = count(cl,metric,1)
+increment(cl::Statsd,metric,sample_rate=nothing) = count(cl,metric,1,sample_rate)
 
-decrement(cl::Statsd,metric) = count(cl,metric,-1)
+decrement(cl::Statsd,metric,sample_rate=nothing) = count(cl,metric,-1,sample_rate)
 
-count(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|c"))
+count(cl::Statsd,metric,value,
+      sample_rate=nothing) = cl.send_msg(string(metric,":",value,"|c"),sample_rate)
 
-timing(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|ms"))
+timing(cl::Statsd,metric,value,
+       sample_rate=nothing) = cl.send_msg(string(metric,":",value,"|ms"),sample_rate)
 
-gauge(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|g"))
+gauge(cl::Statsd,metric,value,
+      sample_rate=nothing) = cl.send_msg(string(metric,":",value,"|g"),sample_rate)
 
-set(cl::Statsd,metric,value) = cl.send_msg(string(metric,":",value,"|s"))
+set(cl::Statsd,metric,value,
+    sample_rate=nothing) = cl.send_msg(string(metric,":",value,"|s"),sample_rate)
 
 # versions of the above that accept multiple metrics at once
 for f in [:count, :timing, :gauge, :set]
     @eval begin
-        function $(f)(cl::Statsd, metrics::Union(AbstractArray, Tuple), value)
+        function $(f)(cl::Statsd, metrics::Union(AbstractArray, Tuple), value,
+                      sample_rate=nothing)
             for m in metrics
-                $(f)(cl, m, value)
+                $(f)(cl, m, value, sample_rate)
             end
         end
     end
