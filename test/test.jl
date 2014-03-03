@@ -76,10 +76,19 @@ function test_set()
     true
 end
 
+function test_sample_rate()
+    svr, server = setup_statsd()
+    test_statsd(svr,"test.sample_rate:3|c|@1.0")
+    StatsdClient.count(server,"test.sample_rate",3,1.0)
+    wait(c)
+    close(svr)
+    true
+end
+
 @test test_increment()
 @test test_decrement()
 @test test_count()
 @test test_timing()
 @test test_gauge()
 @test test_set()
-
+@test test_sample_rate()
