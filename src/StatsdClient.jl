@@ -21,7 +21,7 @@ type Statsd
     Statsd(ipv4::IPv4,port) = new(ipv4,port,_make_send(ipv4,port))
 end
 Statsd() = Statsd(IPv4(127,0,0,1),8125)
-Statsd(ip::String,port=8125) = Statsd(parseip(ip),port)
+Statsd(ip::String,port=8125) = Statsd(getaddrinfo(ip),port)
 
 import Base.show
 show(io::IO,client::Statsd) = print(io,string("Statsd Server: ",
