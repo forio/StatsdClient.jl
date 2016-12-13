@@ -30,10 +30,10 @@ show(io::IO,client::Statsd) = print(io,string("Statsd Server: ",
                                               client.server_port))
 
 function _make_send(ip,port)
-    sock = UdpSocket()
+    sock = UDPSocket()
     Base.bind(sock,ip,0)
     Base.setopt(sock,enable_broadcast=1)
-    function _send(data,sample_rate::Union(Number,Nothing)=nothing)
+    function _send(data,sample_rate::Union{Number,Void}=nothing)
         if is(sample_rate,nothing)
             send(sock,ip,port,data)
         elseif (0 <= sample_rate <= 1) &&
@@ -62,7 +62,7 @@ set(cl::Statsd,metric,value,
 # versions of the above that accept multiple metrics at once
 for f in [:count, :timing, :gauge, :set]
     @eval begin
-        function $(f)(cl::Statsd, metrics::Union(AbstractArray, Tuple), value,
+        function $(f)(cl::Statsd, metrics::Union{AbstractArray, Tuple}, value,
                       sample_rate=nothing)
             for m in metrics
                 $(f)(cl, m, value, sample_rate)
