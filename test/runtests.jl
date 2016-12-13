@@ -1,11 +1,11 @@
 using Base.Test
 
-require("../src/StatsdClient.jl")
+#require("../src/StatsdClient.jl")
 using StatsdClient
 
 # server socket
 function setup_statsd()
-    svr = UdpSocket()
+    svr = UDPSocket()
     bind(svr,ip"127.0.0.1",2376)
     # configure client with server address
     server = StatsdClient.Statsd("127.0.0.1",2376)
@@ -15,7 +15,7 @@ end
 c = Condition()
 function test_statsd(svr,val)
     @async begin
-        arg = bytestring(recv(svr))
+        arg = String(copy(recv(svr)))
         println(arg,":",val)
         @test arg == val
         notify(c)
